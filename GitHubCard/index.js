@@ -18,7 +18,8 @@ import axios from 'axios';
     and append the returned markup to the DOM as a child of .cards
 */
 const cards = document.querySelector('.cards');
-axios.get("https://api.github.com/users/maustrauk")
+axios
+.get("https://api.github.com/users/maustrauk")
 .then (myGitHub => {
   cards.appendChild(gitHubCard(myGitHub.data));
 })
@@ -37,7 +38,18 @@ axios.get("https://api.github.com/users/maustrauk")
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+let followersArray = ["tetondan","dustinmyers","justsml","luishrd","bigknell"];
+followersArray= followersArray.map(follower => `https://api.github.com/users/${follower}`);
+followersArray.forEach( follower => {
+  axios
+  .get(follower)
+  .then (myGitHub => {
+    cards.appendChild(gitHubCard(myGitHub.data));
+  })
+  .catch ( err => {
+    console.log("Error: ",err);
+  })
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -78,15 +90,15 @@ function gitHubCard (gitHubObj) {
   username.classList.add('username');
 
   cardImg.setAttribute("src", gitHubObj.avatar_url);
-  address.setAttribute("href", gitHubObj.url);
+  address.setAttribute("href", gitHubObj.html_url);
 
   name.textContent = gitHubObj.login;
   username.textContent = gitHubObj.name;
   location.textContent = `Location:  ${gitHubObj.location}`;
   profile.textContent = "Profile:";
-  address.textContent = gitHubObj.url;
+  address.textContent = gitHubObj.html_url;
   followers.textContent = `Followers: ${gitHubObj.followers}`;
-  following.textContent = `Followers: ${gitHubObj.following}`;
+  following.textContent = `Following: ${gitHubObj.following}`;
   bio.textContent = `Bio: ${gitHubObj.bio}`;
 
   card.appendChild(cardImg);
