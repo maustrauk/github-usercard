@@ -123,5 +123,10 @@ body {
   margin: 3px 0 10px;
 }
 
+.more-info {
+  display: none;
+}
 
-
+button {
+  margin-bottom: 1em;
+}

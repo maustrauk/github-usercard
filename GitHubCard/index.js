@@ -85,15 +85,18 @@ function gitHubCard (gitHubObj) {
   const followers = document.createElement('p');
   const following = document.createElement('p');
   const bio = document.createElement('p');
+  const moreInfoButton = document.createElement('button');
+  const moreInfo = document.createElement('div');
   
   card.classList.add('card');
   cardInfo.classList.add('card-info');
   name.classList.add('name');
   username.classList.add('username');
+  moreInfo.classList.add('more-info');
 
   cardImg.setAttribute("src", gitHubObj.avatar_url);
   address.setAttribute("href", gitHubObj.html_url);
-
+ 
   name.textContent = gitHubObj.login;
   username.textContent = gitHubObj.name;
   location.textContent = `Location:  ${gitHubObj.location}`;
@@ -102,9 +105,12 @@ function gitHubCard (gitHubObj) {
   followers.textContent = `Followers: ${gitHubObj.followers}`;
   following.textContent = `Following: ${gitHubObj.following}`;
   bio.textContent = `Bio: ${gitHubObj.bio}`;
+  moreInfoButton.textContent = '+';
+  moreInfo.textContent = `Created at: ${gitHubObj.created_at}`;
 
   card.appendChild(cardImg);
   card.appendChild(cardInfo);
+  
 
   cardInfo.appendChild(name);
   cardInfo.appendChild(username);
@@ -113,8 +119,14 @@ function gitHubCard (gitHubObj) {
   cardInfo.appendChild(followers);
   cardInfo.appendChild(following);
   cardInfo.appendChild(bio);
+  cardInfo.appendChild(moreInfoButton);
+  cardInfo.appendChild(moreInfo);
 
   profile.appendChild(address);
+
+  moreInfoButton.addEventListener('click', () => {
+    moreInfo.classList.toggle('more-info');
+  })
 
   return card;
 }
@@ -124,7 +136,14 @@ function checkFollowers (followersURLs) {
   .get(followersURLs)
   .then( followers => {
     followers.data.forEach( follower => {
-      cards.appendChild(gitHubCard(follower));
+      axios
+      .get(follower.url)
+      .then( followerGitHub => {
+        cards.appendChild(gitHubCard(followerGitHub.data));
+      })
+      .catch ( err => {
+        console.log("Error: ",err);
+      })
     });
   })
   .catch ( err => {
