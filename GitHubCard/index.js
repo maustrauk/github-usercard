@@ -13,8 +13,8 @@ axios.get("https://api.github.com/users/maustrauk")
 
     Skip to STEP 3.
 */
-.then (myData => {
-  console.log(myData);
+.then (myGitHub => {
+  console.log(myGitHub);
 })
 /*
   STEP 4: Pass the data received from Github into your function,
@@ -53,6 +53,52 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function gitHubCard (gitHubObj) {
+  const card = document.createElement('div');
+  const cardImg = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const address = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+  
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  username.classList.add('username');
+
+  cardImg.setAttribute("src", gitHubObj.avatar_url);
+  address.setAttribute("href", gitHubObj.url);
+
+  name.textContent = gitHubObj.login;
+  username.textContent = gitHubObj.name;
+  location.textContent = `Location:  ${gitHubObj.location}`;
+  profile.textContent = "Profile:";
+  address.textContent = gitHubObj.url;
+  followers.textContent = `Followers: ${gitHubObj.followers}`;
+  following.textContent = `Followers: ${gitHubObj.following}`;
+  bio.textContent = `Bio: ${gitHubObj.bio}`;
+
+  card.appendChild(cardImg);
+  card.appendChild(cardInfo);
+
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  profile.appendChild(address);
+
+  return card;
+}
 
 /*
   List of LS Instructors Github username's:
