@@ -5,7 +5,7 @@ import axios from 'axios';
     (replacing the placeholder with your Github name):
     https://api.github.com/users/maustrauk
 */
-const myData = axios.get("https://api.github.com/users/maustrauk");
+axios.get("https://api.github.com/users/maustrauk")
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -13,7 +13,9 @@ const myData = axios.get("https://api.github.com/users/maustrauk");
 
     Skip to STEP 3.
 */
-
+.then (myData => {
+  console.log(myData);
+})
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
