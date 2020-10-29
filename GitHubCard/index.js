@@ -22,6 +22,7 @@ axios
 .get("https://api.github.com/users/maustrauk")
 .then (myGitHub => {
   cards.appendChild(gitHubCard(myGitHub.data));
+  checkFollowers(myGitHub.data.followers_url);
 })
 .catch ( err => {
   console.log("Error: ",err);
@@ -45,6 +46,7 @@ followersArray.forEach( follower => {
   .get(follower)
   .then (myGitHub => {
     cards.appendChild(gitHubCard(myGitHub.data));
+    checkFollowers(myGitHub.data.followers_url);
   })
   .catch ( err => {
     console.log("Error: ",err);
@@ -115,6 +117,19 @@ function gitHubCard (gitHubObj) {
   profile.appendChild(address);
 
   return card;
+}
+
+function checkFollowers (followersURLs) {
+  axios
+  .get(followersURLs)
+  .then( followers => {
+    followers.data.forEach( follower => {
+      cards.appendChild(gitHubCard(follower));
+    });
+  })
+  .catch ( err => {
+    console.log("Error: ",err);
+  })
 }
 
 /*
